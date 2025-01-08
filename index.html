@@ -55,6 +55,23 @@
       font-weight: bold;
       color: #333;
     }
+    .result span {
+      font-size: 14px;
+      color: #555;
+    }
+    .warning {
+      color: red;
+      font-weight: bold;
+    }
+    .source {
+      font-size: 12px;
+      color: #777;
+      margin-top: 20px;
+      text-align: left;
+    }
+    .source em {
+      font-style: italic;
+    }
     footer {
       margin-top: 30px;
       font-size: 14px;
@@ -67,9 +84,11 @@
     footer a:hover {
       text-decoration: underline;
     }
-    .warning {
-      color: red;
+    .meeting {
+      font-size: 14px;
+      color: #333;
       font-weight: bold;
+      margin-top: 20px;
     }
     @media (max-width: 600px) {
       h1 {
@@ -81,6 +100,12 @@
       input, button {
         font-size: 14px;
         padding: 12px;
+      }
+      .source {
+        font-size: 10px;
+      }
+      .meeting {
+        font-size: 12px;
       }
     }
   </style>
@@ -97,10 +122,12 @@
     <div class="result" id="result"></div>
     <div class="warning" id="warning"></div>
   </div>
+  <div class="source">
+    * Bu hesaplayıcı <em>Van Groningen, L., Opdenoordt, S., van Sorge, A., Telting, D., Giesen, A., & de Boer, H. (2010). Cholecalciferol loading dose guideline for vitamin D-deficient adults. European Journal of Endocrinology, 162(4), 805–811. doi:10.1530/eje-09-0932</em> çalışmasına göre hazırlanmıştır.
+  </div>
+  <div class="meeting">Ufku Sen Çiz 7-10 Ocak 2025 Antalya Toplantısı Hatırası</div>
   <footer>
-    <p>Bu hesaplayıcı <em>Van Groningen, L., Opdenoordt, S., van Sorge, A., Telting, D., Giesen, A., & de Boer, H. (2010). Cholecalciferol loading dose guideline for vitamin D-deficient adults. European Journal of Endocrinology, 162(4), 805–811. doi:10.1530/eje-09-0932</em> çalışmasına göre hazırlanmıştır.</p>
-    <p>Bu hesaplayıcı <a href="https://drciftci.com" target="_blank">Dr. Can Çiftçi</a> tarafından hazırlanmıştır.</p>
-    <p><strong>Ufku Sen Çiz 7-10 Ocak 2025 Antalya Toplantısı Hatırası</strong></p>
+    <p><a href="https://drciftci.com" target="_blank">Dr. Can Çiftçi</a> tarafından hazırlanmıştır.</p>
   </footer>
   <script>
     function calculateVitamin() {
@@ -113,7 +140,7 @@
 
       // Temizle
       warning.innerText = '';
-      result.innerText = '';
+      result.innerHTML = '';
 
       if (!isNaN(currentLevel) && !isNaN(targetLevel) && !isNaN(weight)) {
         if (weight >= 125) {
@@ -122,7 +149,7 @@
           warning.innerText = "Hedef D vitamini seviyesi, güncel seviyeden büyük olmalıdır.";
         } else {
           const iuNeeded = 100 * (targetLevel - currentLevel) * weight;
-          result.innerText = `Gerekli D Vitamini: ${Math.round(iuNeeded)} IU.`;
+          result.innerHTML = `Gerekli D Vitamini: ${iuNeeded.toLocaleString()} IU. <span>*</span>`;
         }
       } else {
         warning.innerText = "Lütfen geçerli tüm değerleri giriniz.";

@@ -53,6 +53,7 @@
       margin-top: 15px;
       font-size: 18px;
       font-weight: bold;
+      color: #333;
     }
     footer {
       margin-top: 30px;
@@ -65,6 +66,10 @@
     }
     footer a:hover {
       text-decoration: underline;
+    }
+    .warning {
+      color: red;
+      font-weight: bold;
     }
     @media (max-width: 600px) {
       h1 {
@@ -84,28 +89,43 @@
 <body>
   <div class="calculator">
     <h1>D Vitamini Yükleme Hesaplayıcı</h1>
-    <p>Güncel D vitamini seviyenizi ve kilonuzu girin.</p>
-    <input id="currentLevel" type="number" placeholder="D Vitamini Seviyesi (ng/ml)" step="0.1" required>
+    <p>Güncel ve hedef D vitamini seviyenizi girin.</p>
+    <input id="currentLevel" type="number" placeholder="Güncel D Vitamini Seviyesi (ng/ml)" step="0.1" required>
+    <input id="targetLevel" type="number" placeholder="Hedef D Vitamini Seviyesi (ng/ml)" step="0.1" required>
     <input id="weight" type="number" placeholder="Kilonuz (kg)" step="0.1" required>
     <button onclick="calculateVitamin()">Hesapla</button>
     <div class="result" id="result"></div>
+    <div class="warning" id="warning"></div>
   </div>
   <footer>
+    <p>Bu hesaplayıcı <em>Van Groningen, L., Opdenoordt, S., van Sorge, A., Telting, D., Giesen, A., & de Boer, H. (2010). Cholecalciferol loading dose guideline for vitamin D-deficient adults. European Journal of Endocrinology, 162(4), 805–811. doi:10.1530/eje-09-0932</em> çalışmasına göre hazırlanmıştır.</p>
     <p>Bu hesaplayıcı <a href="https://drciftci.com" target="_blank">Dr. Can Çiftçi</a> tarafından hazırlanmıştır.</p>
+    <p><strong>Ufku Sen Çiz 7-10 Ocak 2025 Antalya Toplantısı Hatırası</strong></p>
   </footer>
   <script>
     function calculateVitamin() {
       const currentLevel = parseFloat(document.getElementById('currentLevel').value);
+      const targetLevel = parseFloat(document.getElementById('targetLevel').value);
       const weight = parseFloat(document.getElementById('weight').value);
-      
-      if (!isNaN(currentLevel) && !isNaN(weight)) {
-        const iuNeeded = 40 * (30 - currentLevel) * weight;
-        const roundedIU = Math.max(0, Math.round(iuNeeded)); // Negatif değerleri sıfıra yuvarla.
-        document.getElementById('result').innerText = 
-          `Gerekli D Vitamini: ${roundedIU} IU.`;
+
+      const warning = document.getElementById('warning');
+      const result = document.getElementById('result');
+
+      // Temizle
+      warning.innerText = '';
+      result.innerText = '';
+
+      if (!isNaN(currentLevel) && !isNaN(targetLevel) && !isNaN(weight)) {
+        if (weight >= 125) {
+          warning.innerText = "125 kg ve üstü için klinik değerlendirme ve farklı hesaplama araçları gerekmektedir.";
+        } else if (targetLevel <= currentLevel) {
+          warning.innerText = "Hedef D vitamini seviyesi, güncel seviyeden büyük olmalıdır.";
+        } else {
+          const iuNeeded = 100 * (targetLevel - currentLevel) * weight;
+          result.innerText = `Gerekli D Vitamini: ${Math.round(iuNeeded)} IU.`;
+        }
       } else {
-        document.getElementById('result').innerText = 
-          "Lütfen geçerli bir D vitamini seviyesi ve kilo giriniz.";
+        warning.innerText = "Lütfen geçerli tüm değerleri giriniz.";
       }
     }
   </script>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>D Vitamini Yükleme Hesaplayıcı</title>
+  <style>
+    body {
+      font-family: 'Roboto', Arial, sans-serif;
+      background-color: #f4f4f4;
+      text-align: center;
+      padding: 10px;
+      margin: 0;
+    }
+    .calculator {
+      background: #fff;
+      padding: 20px;
+      margin: 20px auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 90%;
+    }
+    h1 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    p {
+      font-size: 16px;
+      margin-bottom: 20px;
+      color: #555;
+    }
+    input, button {
+      width: 100%;
+      padding: 15px;
+      margin: 10px 0;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+    button {
+      background-color: #28a745;
+      color: white;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+    .result {
+      margin-top: 15px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    footer {
+      margin-top: 30px;
+      font-size: 14px;
+      color: #555;
+    }
+    footer a {
+      text-decoration: none;
+      color: #007bff;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 20px;
+      }
+      p {
+        font-size: 14px;
+      }
+      input, button {
+        font-size: 14px;
+        padding: 12px;
+      }
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="calculator">
+    <h1>D Vitamini Yükleme Hesaplayıcı</h1>
+    <p>Güncel D vitamini seviyenizi ve kilonuzu girin.</p>
+    <input id="currentLevel" type="number" placeholder="D Vitamini Seviyesi (ng/ml)" step="0.1" required>
+    <input id="weight" type="number" placeholder="Kilonuz (kg)" step="0.1" required>
+    <button onclick="calculateVitamin()">Hesapla</button>
+    <div class="result" id="result"></div>
+  </div>
+  <footer>
+    <p>Bu hesaplayıcı <a href="https://drciftci.com" target="_blank">Dr. Can Çiftçi</a> tarafından hazırlanmıştır.</p>
+  </footer>
+  <script>
+    function calculateVitamin() {
+      const currentLevel = parseFloat(document.getElementById('currentLevel').value);
+      const weight = parseFloat(document.getElementById('weight').value);
+      
+      if (!isNaN(currentLevel) && !isNaN(weight)) {
+        const iuNeeded = 40 * (30 - currentLevel) * weight;
+        const roundedIU = Math.max(0, Math.round(iuNeeded)); // Negatif değerleri sıfıra yuvarla.
+        document.getElementById('result').innerText = 
+          `Gerekli D Vitamini: ${roundedIU} IU.`;
+      } else {
+        document.getElementById('result').innerText = 
+          "Lütfen geçerli bir D vitamini seviyesi ve kilo giriniz.";
+      }
+    }
+  </script>
+</body>
+</html>
